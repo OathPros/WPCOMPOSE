@@ -1,0 +1,29 @@
+{
+  "page_type": "initiative_page",
+  "audience": "students",
+  "tone": "strategic",
+  "title": "Campus Sustainability Initiative",
+  "intro": "York is investing in greener operations.",
+  "sections": [
+    {
+      "section_id": "hero",
+      "module_type": "hero_banner",
+      "heading": "Sustainability at York",
+      "content": {"eyebrow": "Initiative", "subheading": "Building a cleaner future"}
+    },
+    {
+      "section_id": "mission",
+      "module_type": "standard_content_section",
+      "heading": "Mission",
+      "content": {"body": "Reduce emissions and increase resilience."}
+    },
+    {
+      "section_id": "cta",
+      "module_type": "cta_block",
+      "heading": "Get Involved",
+      "content": {"text": "Join upcoming workshops.", "button_label": "Sign up", "button_url": "https://www.yorku.ca"}
+    }
+  ],
+  "cta": {"label": "Participate", "url": "https://www.yorku.ca"},
+  "editor_notes": []
+}

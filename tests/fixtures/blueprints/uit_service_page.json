@@ -1,0 +1,29 @@
+{
+  "page_type": "uit_service_page",
+  "audience": "staff",
+  "tone": "service-oriented",
+  "title": "IT Support Services",
+  "intro": "Find support resources and request help.",
+  "sections": [
+    {
+      "section_id": "hero",
+      "module_type": "hero_banner",
+      "heading": "UIT Services",
+      "content": {"eyebrow": "Support", "subheading": "We are here to help"}
+    },
+    {
+      "section_id": "nav",
+      "module_type": "on_this_page_nav",
+      "heading": "On this page",
+      "content": {"anchors": ["#support-hours"]}
+    },
+    {
+      "section_id": "support-hours",
+      "module_type": "standard_content_section",
+      "heading": "Support Hours",
+      "content": {"body": "Weekdays 8am to 8pm."}
+    }
+  ],
+  "cta": {"label": "Submit ticket", "url": "https://www.yorku.ca"},
+  "editor_notes": ["Add holiday schedule."]
+}

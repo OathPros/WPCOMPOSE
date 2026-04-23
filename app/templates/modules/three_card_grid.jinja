@@ -1,0 +1,10 @@
+<!-- wp:group {"className":"york-three-card-grid"} -->
+<section id="{{ section.section_id }}" class="york-three-card-grid">
+  <h2>{{ section.heading }}</h2>
+  <div class="cards">
+  {% for card in section.content.cards %}
+    <article class="card"><h3>{{ card.title }}</h3><p>{{ card.body }}</p>{% if card.link %}<a href="{{ card.link }}">Learn more</a>{% endif %}</article>
+  {% endfor %}
+  </div>
+</section>
+<!-- /wp:group -->
