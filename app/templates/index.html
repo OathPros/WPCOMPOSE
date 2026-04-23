@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>York AI Web Composer</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>York AI Web Composer</h1>
+    <form action="/compose" method="post" enctype="multipart/form-data" class="card">
+      <label>Paste source text</label>
+      <textarea name="raw_text" rows="10" placeholder="Paste source material..."></textarea>
+
+      <label>Upload files (.pdf, .docx, .txt, .md)</label>
+      <input type="file" name="files" multiple accept=".pdf,.docx,.txt,.md" />
+
+      <label>Page type</label>
+      <select name="page_type" required>
+        {% for pt in page_types %}
+          <option value="{{ pt }}">{{ pt }}</option>
+        {% endfor %}
+      </select>
+
+      <label>Audience (optional)</label>
+      <input type="text" name="audience" />
+
+      <label>Tone (optional)</label>
+      <input type="text" name="tone" />
+
+      <button type="submit">Generate</button>
+    </form>
+
+    {% if error %}
+      <section class="error">{{ error }}</section>
+    {% endif %}
+
+    {% if result %}
+      <section class="card">
+        <h2>Summary</h2>
+        <p>{{ result.summary }}</p>
+        <p><strong>Sources:</strong> {{ result.sources | join(', ') }}</p>
+      </section>
+
+      <section class="card">
+        <h2>Outline</h2>
+        <ul>
+          {% for item in result.outline %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Editor Notes</h2>
+        <ul>
+          {% for note in result.editor_notes %}<li>{{ note }}</li>{% endfor %}
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Final Markup</h2>
+        <button onclick="copyMarkup()" type="button">Copy markup</button>
+        <pre id="markup">{{ result.markup }}</pre>
+      </section>
+
+      <section class="card">
+        <h2>Blueprint JSON</h2>
+        <pre>{{ result.blueprint }}</pre>
+      </section>
+
+      {% if result.validation_errors %}
+      <section class="card error">
+        <h2>Validation Errors</h2>
+        <ul>{% for e in result.validation_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      </section>
+      {% endif %}
+    {% endif %}
+  </main>
+  <script>
+    function copyMarkup() {
+      const content = document.getElementById('markup').innerText;
+      navigator.clipboard.writeText(content);
+      alert('Markup copied');
+    }
+  </script>
+</body>
+</html>

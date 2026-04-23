@@ -1,0 +1,58 @@
+from app.schemas.blueprint import ModuleType, PageType
+
+PAGE_RULES = {
+    PageType.CIO_ARTICLE: {
+        "required_sections": [ModuleType.HERO_BANNER, ModuleType.LEAD_PARAGRAPH, ModuleType.STANDARD_CONTENT_SECTION],
+        "optional_sections": [ModuleType.THREE_CARD_GRID, ModuleType.CALLOUT_BAND, ModuleType.RELATED_LINKS, ModuleType.CTA_BLOCK],
+        "allowed_modules": [
+            ModuleType.HERO_BANNER,
+            ModuleType.LEAD_PARAGRAPH,
+            ModuleType.ON_THIS_PAGE_NAV,
+            ModuleType.STANDARD_CONTENT_SECTION,
+            ModuleType.TWO_COLUMN_SECTION,
+            ModuleType.THREE_CARD_GRID,
+            ModuleType.CALLOUT_BAND,
+            ModuleType.FAQ_ACCORDION,
+            ModuleType.CTA_BLOCK,
+            ModuleType.RELATED_LINKS,
+        ],
+        "banned_modules": [],
+        "default_tone": "informative and editorial",
+    },
+    PageType.INITIATIVE_PAGE: {
+        "required_sections": [ModuleType.HERO_BANNER, ModuleType.STANDARD_CONTENT_SECTION, ModuleType.CTA_BLOCK],
+        "optional_sections": [ModuleType.THREE_CARD_GRID, ModuleType.FAQ_ACCORDION, ModuleType.RELATED_LINKS],
+        "allowed_modules": [
+            ModuleType.HERO_BANNER,
+            ModuleType.LEAD_PARAGRAPH,
+            ModuleType.ON_THIS_PAGE_NAV,
+            ModuleType.STANDARD_CONTENT_SECTION,
+            ModuleType.TWO_COLUMN_SECTION,
+            ModuleType.THREE_CARD_GRID,
+            ModuleType.CALLOUT_BAND,
+            ModuleType.FAQ_ACCORDION,
+            ModuleType.CTA_BLOCK,
+            ModuleType.RELATED_LINKS,
+        ],
+        "banned_modules": [],
+        "default_tone": "strategic and community-focused",
+    },
+    PageType.UIT_SERVICE_PAGE: {
+        "required_sections": [ModuleType.HERO_BANNER, ModuleType.ON_THIS_PAGE_NAV, ModuleType.STANDARD_CONTENT_SECTION],
+        "optional_sections": [ModuleType.FAQ_ACCORDION, ModuleType.RELATED_LINKS, ModuleType.CTA_BLOCK],
+        "allowed_modules": [
+            ModuleType.HERO_BANNER,
+            ModuleType.LEAD_PARAGRAPH,
+            ModuleType.ON_THIS_PAGE_NAV,
+            ModuleType.STANDARD_CONTENT_SECTION,
+            ModuleType.TWO_COLUMN_SECTION,
+            ModuleType.THREE_CARD_GRID,
+            ModuleType.CALLOUT_BAND,
+            ModuleType.FAQ_ACCORDION,
+            ModuleType.CTA_BLOCK,
+            ModuleType.RELATED_LINKS,
+        ],
+        "banned_modules": [],
+        "default_tone": "clear and service-oriented",
+    },
+}

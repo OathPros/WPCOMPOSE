@@ -1,0 +1,10 @@
+<!-- wp:heading {"level":1} -->
+<h1>York Technology Update</h1>
+<!-- /wp:heading -->
+<!-- wp:group {"className":"york-hero-banner"} -->
+<section id="hero" class="york-hero-banner">
+  <h2>Technology at York</h2>
+  <p class="eyebrow">CIO Office</p>
+  <p>Spring update</p>
+</section>
+<!-- /wp:group -->

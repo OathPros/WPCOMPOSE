@@ -1,0 +1,8 @@
+<!-- wp:list {"className":"york-related-links"} -->
+<section id="{{ section.section_id }}">
+  <h2>{{ section.heading }}</h2>
+  <ul>
+    {% for link in section.content.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}
+  </ul>
+</section>
+<!-- /wp:list -->

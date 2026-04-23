@@ -1,0 +1,29 @@
+{
+  "page_type": "cio_article",
+  "audience": "faculty and staff",
+  "tone": "informative",
+  "title": "York Technology Update",
+  "intro": "Latest updates from the CIO office.",
+  "sections": [
+    {
+      "section_id": "hero",
+      "module_type": "hero_banner",
+      "heading": "Technology at York",
+      "content": {"eyebrow": "CIO Office", "subheading": "Spring update"}
+    },
+    {
+      "section_id": "lead",
+      "module_type": "lead_paragraph",
+      "heading": "Overview",
+      "content": {"text": "This semester includes major upgrades."}
+    },
+    {
+      "section_id": "details",
+      "module_type": "standard_content_section",
+      "heading": "Details",
+      "content": {"body": "Networks and labs are being refreshed."}
+    }
+  ],
+  "cta": {"label": "Read more", "url": "https://www.yorku.ca"},
+  "editor_notes": ["Confirm timeline details."]
+}
