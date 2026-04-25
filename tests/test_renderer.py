@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 from app.renderers.gutenberg_renderer import GutenbergRenderer
@@ -16,11 +17,17 @@ def test_renderer_outputs_hero_lead_standard_modules():
     renderer = GutenbergRenderer()
     markup = renderer.render_page(blueprint)
 
-    assert "<!-- wp:group {\"tagName\":\"section\"" in markup
-    assert "class=\"wp-block-group york-hero-banner\"" in markup
+    assert '<!-- wp:group {"tagName":"section"' not in markup
+    assert "<!-- wp:html -->" in markup
+    assert '<section id="hero" class="york-hero-banner">' in markup
+    assert "<h2>Technology at York</h2>" in markup
+    assert "Spring update" in markup
+    assert '<section id="details" class="york-standard-content">' in markup
+    assert "<h2>Details</h2>" in markup
+    assert "Networks and labs are being refreshed." in markup
     assert "york-lead" in markup
-    assert "class=\"wp-block-group york-standard-content\"" in markup
     assert "<!-- wp:" in markup
+
 
 
 def test_renderer_outputs_kadence_tabs_and_accordion_modules():
@@ -45,64 +52,6 @@ def test_renderer_outputs_kadence_tabs_and_accordion_modules():
     assert "kt-accordion-inner-wrap" in markup
     assert "Can UIT build my Docker image?" in markup
     assert "Can I use Docker for production hosting?" in markup
-
-
-def test_renderer_outputs_core_spacer_sizes():
-    blueprint = PageBlueprint.model_validate(
-        {
-            "page_type": "cio_article",
-            "title": "Spacing Test",
-            "intro": "Intro",
-            "sections": [
-                {
-                    "section_id": "spacer-small",
-                    "module_type": "core_spacer",
-                    "heading": "Spacer",
-                    "content": {"size": "small"},
-                },
-                {
-                    "section_id": "spacer-medium",
-                    "module_type": "core_spacer",
-                    "heading": "Spacer",
-                    "content": {"size": "medium"},
-                },
-                {
-                    "section_id": "spacer-large",
-                    "module_type": "core_spacer",
-                    "heading": "Spacer",
-                    "content": {"size": "large"},
-                },
-            ],
-            "cta": {"label": "Read", "url": "https://example.edu"},
-        }
-    )
-
-    renderer = GutenbergRenderer()
-    markup = renderer.render_page(blueprint)
-
-    assert "<!-- wp:spacer {\"height\":\"25px\"} -->" in markup
-    assert "<div style=\"height:25px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
-    assert "<!-- wp:spacer {\"height\":\"50px\"} -->" in markup
-    assert "<div style=\"height:50px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
-    assert "<!-- wp:spacer -->" in markup
-    assert "<div style=\"height:100px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
-    assert "spacer small" not in markup.lower()
-    assert "spacer medium" not in markup.lower()
-    assert "spacer large" not in markup.lower()
-
-
-def test_renderer_outputs_spacers_with_kadence_modules():
-    blueprint = load_blueprint("uit_service_page_with_spacers")
-
-    renderer = GutenbergRenderer()
-    markup = renderer.render_page(blueprint)
-
-    assert "<!-- wp:spacer {\"height\":\"50px\"} -->" in markup
-    assert "<div style=\"height:50px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
-    assert "<!-- wp:spacer -->" in markup
-    assert "<div style=\"height:100px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
-    assert "<!-- wp:kadence/tabs" in markup
-    assert "<!-- wp:kadence/accordion" in markup
 
 
 def test_renderer_outputs_valid_related_links_and_on_page_nav_markup():
@@ -137,9 +86,42 @@ def test_renderer_outputs_valid_related_links_and_on_page_nav_markup():
     renderer = GutenbergRenderer()
     markup = renderer.render_page(blueprint)
 
-    assert "<!-- wp:group {\"tagName\":\"section\",\"anchor\":\"related-services\",\"className\":\"york-related-links\"} -->" in markup
+    assert '<section id="related-services" class="york-related-links">' in markup
+    assert "<!-- wp:group" not in markup
     assert "<!-- wp:list {\"className\":\"york-related-links\"} -->" not in markup
-    assert "<!-- wp:list -->" in markup
+    assert "<!-- wp:html -->" in markup
+    assert "<h2>Related Services</h2>" in markup
+    assert "<ul>" in markup
     assert "<a href=\"#overview\">Overview</a>" in markup
     assert "<a href=\"#service-details\">Service Details</a>" in markup
     assert 'href="overview"' not in markup
+
+
+
+def test_renderer_avoids_empty_custom_sections_and_uses_html_callout_wrapper():
+    blueprint = PageBlueprint.model_validate(
+        {
+            "page_type": "uit_service_page",
+            "title": "Test",
+            "intro": "Intro",
+            "sections": [
+                {
+                    "section_id": "callout-1",
+                    "module_type": "callout_band",
+                    "heading": "Important Notice",
+                    "content": {"text": "Docker is not automatically approved for production hosting."},
+                }
+            ],
+            "cta": {"label": "Contact", "url": "https://example.edu/contact"},
+        }
+    )
+
+    renderer = GutenbergRenderer()
+    markup = renderer.render_page(blueprint)
+
+    assert '<section id="callout-1" class="york-callout-band">' in markup
+    assert "<!-- wp:quote" not in markup
+    assert "<!-- wp:html -->" in markup
+    assert "Important Notice" in markup
+    assert "Docker is not automatically approved for production hosting." in markup
+    assert re.search(r"<section\\b[^>]*>\\s*</section>", markup) is None
