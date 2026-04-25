@@ -8,72 +8,109 @@
 </head>
 <body>
   <main class="container">
-    <h1>York AI Web Composer</h1>
-    <form action="/compose" method="post" enctype="multipart/form-data" class="card">
-      <label>Paste source text</label>
-      <textarea name="raw_text" rows="10" placeholder="Paste source material..."></textarea>
+    <header class="page-header card" aria-labelledby="page-title">
+      <p class="eyebrow">York University</p>
+      <h1 id="page-title">York AI Web Composer</h1>
+      <p class="subtitle">Create structured, publication-ready web drafts from source material using York-aligned content standards.</p>
+    </header>
 
-      <label>Upload files (.pdf, .docx, .txt, .md)</label>
-      <input type="file" name="files" multiple accept=".pdf,.docx,.txt,.md" />
+    <section class="card" aria-labelledby="compose-title">
+      <h2 id="compose-title">Compose a page draft</h2>
+      <p class="section-intro">Provide source text, uploaded files, or both. Then choose page settings and generate your draft.</p>
 
-      <label>Page type</label>
-      <select name="page_type" required>
-        {% for pt in page_types %}
-          <option value="{{ pt }}">{{ pt }}</option>
-        {% endfor %}
-      </select>
+      <form action="/compose" method="post" enctype="multipart/form-data" class="compose-form">
+        <div class="field-group">
+          <label for="raw_text">Paste source text</label>
+          <p class="help-text">Paste plain text, notes, or source content. This is optional if you upload files.</p>
+          <textarea id="raw_text" name="raw_text" rows="10" placeholder="Paste source material..."></textarea>
+        </div>
 
-      <label>Audience (optional)</label>
-      <input type="text" name="audience" />
+        <div class="field-grid">
+          <div class="field-group">
+            <label for="files">Upload files (.pdf, .docx, .txt, .md)</label>
+            <p class="help-text">Upload one or more source files to extract content for drafting.</p>
+            <input id="files" type="file" name="files" multiple accept=".pdf,.docx,.txt,.md" />
+          </div>
 
-      <label>Tone (optional)</label>
-      <input type="text" name="tone" />
+          <div class="field-group">
+            <label for="page_type">Page type</label>
+            <p class="help-text">Select the destination page template type.</p>
+            <select id="page_type" name="page_type" required>
+              {% for pt in page_types %}
+                <option value="{{ pt }}">{{ pt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
 
-      <button type="submit">Generate</button>
-    </form>
+        <div class="field-grid two-up">
+          <div class="field-group">
+            <label for="audience">Audience (optional)</label>
+            <p class="help-text">Specify the primary audience for tone and emphasis.</p>
+            <input id="audience" type="text" name="audience" />
+          </div>
+
+          <div class="field-group">
+            <label for="tone">Tone (optional)</label>
+            <p class="help-text">Set the desired writing tone (e.g., informative, welcoming).</p>
+            <input id="tone" type="text" name="tone" />
+          </div>
+        </div>
+
+        <button class="primary-button" type="submit">Generate</button>
+      </form>
+    </section>
 
     {% if error %}
-      <section class="error">{{ error }}</section>
+      <section class="error-panel" role="alert" aria-live="polite">
+        <h2>Unable to generate draft</h2>
+        <p>{{ error }}</p>
+      </section>
     {% endif %}
 
     {% if result %}
-      <section class="card">
-        <h2>Summary</h2>
-        <p>{{ result.summary }}</p>
-        <p><strong>Sources:</strong> {{ result.sources | join(', ') }}</p>
-      </section>
+      <section class="results" aria-label="Generation results">
+        <section class="card result-card">
+          <h2>Summary</h2>
+          <p>{{ result.summary }}</p>
+          <p><strong>Sources:</strong> {{ result.sources | join(', ') }}</p>
+        </section>
 
-      <section class="card">
-        <h2>Outline</h2>
-        <ul>
-          {% for item in result.outline %}<li>{{ item }}</li>{% endfor %}
-        </ul>
-      </section>
+        <section class="card result-card">
+          <h2>Outline</h2>
+          <ul class="result-list">
+            {% for item in result.outline %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+        </section>
 
-      <section class="card">
-        <h2>Editor Notes</h2>
-        <ul>
-          {% for note in result.editor_notes %}<li>{{ note }}</li>{% endfor %}
-        </ul>
-      </section>
+        <section class="card result-card">
+          <h2>Editor Notes</h2>
+          <ul class="result-list">
+            {% for note in result.editor_notes %}<li>{{ note }}</li>{% endfor %}
+          </ul>
+        </section>
 
-      <section class="card">
-        <h2>Final Markup</h2>
-        <button onclick="copyMarkup()" type="button">Copy markup</button>
-        <pre id="markup">{{ result.markup }}</pre>
-      </section>
+        <section class="card result-card">
+          <div class="section-row">
+            <h2>Final Markup</h2>
+            <button class="secondary-button" onclick="copyMarkup()" type="button">Copy markup</button>
+          </div>
+          <pre id="markup">{{ result.markup }}</pre>
+        </section>
 
-      <section class="card">
-        <h2>Blueprint JSON</h2>
-        <pre>{{ result.blueprint }}</pre>
-      </section>
+        <section class="card result-card">
+          <h2>Blueprint JSON</h2>
+          <pre>{{ result.blueprint }}</pre>
+        </section>
 
-      {% if result.validation_errors %}
-      <section class="card error">
-        <h2>Validation Errors</h2>
-        <ul>{% for e in result.validation_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        {% if result.validation_errors %}
+        <section class="card result-card error-panel validation-panel" role="alert" aria-live="polite">
+          <h2>Validation Errors</h2>
+          <p>Please review the following issues before publishing:</p>
+          <ul class="result-list">{% for e in result.validation_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        </section>
+        {% endif %}
       </section>
-      {% endif %}
     {% endif %}
   </main>
   <script>
