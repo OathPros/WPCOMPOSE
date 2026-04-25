@@ -43,7 +43,20 @@ async def compose(
     files: list[UploadFile] | None = File(default=None),
 ):
     try:
-        ingested = await ingestion_service.ingest(raw_text, files or [])
+        valid_files: list[UploadFile] = []
+
+        for file in files or []:
+            if file is None:
+                continue
+            if file.filename is None:
+                continue
+            if file.filename.strip() == "":
+                continue
+
+            valid_files.append(file)
+
+        ingested = await ingestion_service.ingest(raw_text, valid_files)
+
         blueprint = blueprint_service.generate_blueprint(
             page_type=page_type,
             normalized_content=ingested["normalized_content"],
