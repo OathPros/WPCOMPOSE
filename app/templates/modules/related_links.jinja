@@ -1,13 +1,8 @@
-<!-- wp:group {"tagName":"section","anchor":"{{ section.section_id }}","className":"york-related-links"} -->
-<section class="wp-block-group york-related-links" id="{{ section.section_id }}">
-  <!-- wp:heading -->
-  <h2 class="wp-block-heading">{{ section.heading }}</h2>
-  <!-- /wp:heading -->
-
-  <!-- wp:list -->
+<!-- wp:html -->
+<section id="{{ section.section_id }}" class="york-related-links">
+  <h2>{{ section.heading }}</h2>
   <ul>
     {% for link in section.content.links %}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}
   </ul>
-  <!-- /wp:list -->
 </section>
-<!-- /wp:group -->
+<!-- /wp:html -->
