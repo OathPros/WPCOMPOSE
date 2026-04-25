@@ -25,6 +25,7 @@ class ModuleType(str, Enum):
     RELATED_LINKS = "related_links"
     KADENCE_TABS = "kadence_tabs"
     KADENCE_ACCORDION = "kadence_accordion"
+    CORE_SPACER = "core_spacer"
 
 
 class HeroBannerContent(BaseModel):
@@ -93,6 +94,11 @@ class KadenceAccordionItem(BaseModel):
 class KadenceAccordionContent(BaseModel):
     model_config = ConfigDict(extra="forbid")
     items: list[KadenceAccordionItem]
+
+
+class CoreSpacerContent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    size: Literal["small", "medium", "large"]
 
 
 class CTABlockContent(BaseModel):
@@ -173,6 +179,11 @@ class KadenceAccordionSection(BaseSection):
     content: KadenceAccordionContent
 
 
+class CoreSpacerSection(BaseSection):
+    module_type: Literal[ModuleType.CORE_SPACER]
+    content: CoreSpacerContent
+
+
 class CTABlockSection(BaseSection):
     module_type: Literal[ModuleType.CTA_BLOCK]
     content: CTABlockContent
@@ -195,6 +206,7 @@ Section = Annotated[
         FAQAccordionSection,
         KadenceTabsSection,
         KadenceAccordionSection,
+        CoreSpacerSection,
         CTABlockSection,
         RelatedLinksSection,
     ],

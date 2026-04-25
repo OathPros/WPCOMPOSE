@@ -17,6 +17,7 @@ MODULE_TEMPLATE_MAP = {
     ModuleType.FAQ_ACCORDION: "modules/faq_accordion.jinja",
     ModuleType.KADENCE_TABS: "modules/kadence_tabs.jinja",
     ModuleType.KADENCE_ACCORDION: "modules/kadence_accordion.jinja",
+    ModuleType.CORE_SPACER: "modules/core_spacer.jinja",
     ModuleType.CTA_BLOCK: "modules/cta_block.jinja",
     ModuleType.RELATED_LINKS: "modules/related_links.jinja",
 }

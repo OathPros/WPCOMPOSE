@@ -91,6 +91,7 @@ class BlueprintService:
             f"You are generating a structured York webpage blueprint for {page_type.value}.\n"
             f"Allowed modules: {[module.value for module in rules['allowed_modules']]}.\n"
             f"Required modules: {[module.value for module in rules['required_sections']]}.\n"
+            f"Module guidance: {rules.get('module_guidance', 'Use modules conservatively and intentionally.')}.\n"
             f"Default tone: {rules['default_tone']}.\n"
             f"Audience: {audience or 'general York audience'}.\n"
             f"Tone override: {tone or 'none'}.\n\n"

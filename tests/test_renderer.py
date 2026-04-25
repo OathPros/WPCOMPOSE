@@ -54,7 +54,6 @@ def test_renderer_outputs_kadence_tabs_and_accordion_modules():
     assert "Can I use Docker for production hosting?" in markup
 
 
-
 def test_renderer_outputs_valid_related_links_and_on_page_nav_markup():
     blueprint = PageBlueprint.model_validate(
         {

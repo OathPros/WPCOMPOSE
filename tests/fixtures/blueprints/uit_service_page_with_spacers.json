@@ -1,0 +1,87 @@
+{
+  "page_type": "uit_service_page",
+  "audience": "staff",
+  "tone": "service-oriented",
+  "title": "Docker Support Service",
+  "intro": "Find support resources and request help.",
+  "sections": [
+    {
+      "section_id": "hero",
+      "module_type": "hero_banner",
+      "heading": "Docker Support",
+      "content": {"eyebrow": "UIT", "subheading": "Guidance and troubleshooting"}
+    },
+    {
+      "section_id": "lead",
+      "module_type": "lead_paragraph",
+      "heading": "Overview",
+      "content": {"text": "Get setup advice, troubleshooting help, and escalation guidance."}
+    },
+    {
+      "section_id": "spacer-after-hero",
+      "module_type": "core_spacer",
+      "heading": "Spacer",
+      "content": {"size": "medium"}
+    },
+    {
+      "section_id": "docker-support-tabs",
+      "module_type": "kadence_tabs",
+      "heading": "Docker Support Details",
+      "content": {
+        "tabs": [
+          {
+            "title": "What support includes",
+            "heading": "What support includes",
+            "body": "UIT can provide installation guidance, basic troubleshooting and referrals."
+          },
+          {
+            "title": "What is out of scope",
+            "heading": "What is out of scope",
+            "body": "Docker Support does not include application development, production hosting or Kubernetes."
+          }
+        ]
+      }
+    },
+    {
+      "section_id": "spacer-before-faq",
+      "module_type": "core_spacer",
+      "heading": "Spacer",
+      "content": {"size": "medium"}
+    },
+    {
+      "section_id": "docker-faq",
+      "module_type": "kadence_accordion",
+      "heading": "Frequently Asked Questions",
+      "content": {
+        "items": [
+          {
+            "title": "Can UIT build my Docker image?",
+            "body": "No. UIT can provide guidance and troubleshooting, but users remain responsible for application code and image maintenance."
+          },
+          {
+            "title": "Can I use Docker for production hosting?",
+            "body": "Production use requires an approved operating model and may require review by security and infrastructure teams."
+          }
+        ]
+      }
+    },
+    {
+      "section_id": "spacer-before-cta",
+      "module_type": "core_spacer",
+      "heading": "Spacer",
+      "content": {"size": "large"}
+    },
+    {
+      "section_id": "request-support",
+      "module_type": "cta_block",
+      "heading": "Request Support",
+      "content": {
+        "text": "Need help with Docker issues? Submit a support request and include your environment details.",
+        "button_label": "Request support",
+        "button_url": "https://www.yorku.ca"
+      }
+    }
+  ],
+  "cta": {"label": "Submit ticket", "url": "https://www.yorku.ca"},
+  "editor_notes": []
+}
