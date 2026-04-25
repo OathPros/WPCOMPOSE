@@ -9,6 +9,7 @@ from app.schemas.blueprint import ModuleType, PageBlueprint
 class ValidationService:
     def validate_blueprint(self, blueprint: PageBlueprint) -> list[str]:
         errors: list[str] = []
+        spacer_count = 0
 
         if not blueprint.title.strip():
             errors.append("Exactly one H1 title is required.")
@@ -88,6 +89,29 @@ class ValidationService:
                     if normalized_title in seen_titles:
                         errors.append("kadence_accordion item titles must be unique after normalization.")
                     seen_titles.add(normalized_title)
+
+            if section.module_type == ModuleType.CORE_SPACER:
+                spacer_count += 1
+                size = getattr(section.content, "size", None)
+                if not size:
+                    errors.append("core_spacer size is required.")
+                elif size not in {"small", "medium", "large"}:
+                    errors.append("core_spacer size must be one of: small, medium, large.")
+
+                extra_fields = set(section.content.model_dump().keys()) - {"size"}
+                if extra_fields:
+                    errors.append(
+                        "core_spacer only supports the content field 'size'; body text, links, cards, tabs, "
+                        "accordion items, and raw HTML are not allowed."
+                    )
+
+        for previous, current in zip(blueprint.sections, blueprint.sections[1:]):
+            if previous.module_type == ModuleType.CORE_SPACER and current.module_type == ModuleType.CORE_SPACER:
+                errors.append("Consecutive core_spacer modules are not allowed.")
+                break
+
+        if spacer_count > 6:
+            errors.append("A page should not include more than 6 core_spacer modules.")
 
         has_placeholder = "TODO" in blueprint.intro or any("TODO" in note for note in blueprint.editor_notes)
         if has_placeholder and not blueprint.editor_notes:

@@ -47,6 +47,64 @@ def test_renderer_outputs_kadence_tabs_and_accordion_modules():
     assert "Can I use Docker for production hosting?" in markup
 
 
+def test_renderer_outputs_core_spacer_sizes():
+    blueprint = PageBlueprint.model_validate(
+        {
+            "page_type": "cio_article",
+            "title": "Spacing Test",
+            "intro": "Intro",
+            "sections": [
+                {
+                    "section_id": "spacer-small",
+                    "module_type": "core_spacer",
+                    "heading": "Spacer",
+                    "content": {"size": "small"},
+                },
+                {
+                    "section_id": "spacer-medium",
+                    "module_type": "core_spacer",
+                    "heading": "Spacer",
+                    "content": {"size": "medium"},
+                },
+                {
+                    "section_id": "spacer-large",
+                    "module_type": "core_spacer",
+                    "heading": "Spacer",
+                    "content": {"size": "large"},
+                },
+            ],
+            "cta": {"label": "Read", "url": "https://example.edu"},
+        }
+    )
+
+    renderer = GutenbergRenderer()
+    markup = renderer.render_page(blueprint)
+
+    assert "<!-- wp:spacer {\"height\":\"25px\"} -->" in markup
+    assert "<div style=\"height:25px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
+    assert "<!-- wp:spacer {\"height\":\"50px\"} -->" in markup
+    assert "<div style=\"height:50px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
+    assert "<!-- wp:spacer -->" in markup
+    assert "<div style=\"height:100px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
+    assert "spacer small" not in markup.lower()
+    assert "spacer medium" not in markup.lower()
+    assert "spacer large" not in markup.lower()
+
+
+def test_renderer_outputs_spacers_with_kadence_modules():
+    blueprint = load_blueprint("uit_service_page_with_spacers")
+
+    renderer = GutenbergRenderer()
+    markup = renderer.render_page(blueprint)
+
+    assert "<!-- wp:spacer {\"height\":\"50px\"} -->" in markup
+    assert "<div style=\"height:50px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
+    assert "<!-- wp:spacer -->" in markup
+    assert "<div style=\"height:100px\" aria-hidden=\"true\" class=\"wp-block-spacer\"></div>" in markup
+    assert "<!-- wp:kadence/tabs" in markup
+    assert "<!-- wp:kadence/accordion" in markup
+
+
 def test_renderer_outputs_valid_related_links_and_on_page_nav_markup():
     blueprint = PageBlueprint.model_validate(
         {

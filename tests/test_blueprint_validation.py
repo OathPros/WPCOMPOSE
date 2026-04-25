@@ -71,3 +71,41 @@ def test_kadence_raw_html_fields_are_rejected():
 
     with pytest.raises(ValidationError):
         PageBlueprint.model_validate(fixture)
+
+
+def test_core_spacer_invalid_size_fails_schema_validation():
+    fixture = json.loads(Path("tests/fixtures/blueprints/uit_service_page_with_spacers.json").read_text())
+    spacer = next(section for section in fixture["sections"] if section["module_type"] == "core_spacer")
+    spacer["content"]["size"] = "75px"
+
+    with pytest.raises(ValidationError):
+        PageBlueprint.model_validate(fixture)
+
+
+def test_core_spacer_consecutive_modules_are_flagged():
+    bp = load_fixture("uit_service_page_with_spacers")
+    bp.sections.insert(
+        3,
+        bp.sections[2].model_copy(
+            update={"section_id": "spacer-duplicate"},
+            deep=True,
+        ),
+    )
+
+    errors = ValidationService().validate_blueprint(bp)
+    assert any("Consecutive core_spacer modules are not allowed." in e for e in errors)
+
+
+def test_core_spacer_excessive_usage_is_flagged():
+    bp = load_fixture("uit_service_page_with_spacers")
+    base_spacer = next(section for section in bp.sections if section.module_type.value == "core_spacer")
+    for idx in range(1, 5):
+        bp.sections.append(
+            base_spacer.model_copy(
+                update={"section_id": f"extra-spacer-{idx}"},
+                deep=True,
+            )
+        )
+
+    errors = ValidationService().validate_blueprint(bp)
+    assert any("more than 6 core_spacer modules" in e for e in errors)
