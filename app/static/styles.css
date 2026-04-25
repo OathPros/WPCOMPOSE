@@ -1,7 +1,247 @@
-body { font-family: Arial, sans-serif; background: #f8f9fb; margin: 0; }
-.container { max-width: 980px; margin: 2rem auto; padding: 1rem; }
-.card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-label { display: block; margin-top: 0.75rem; font-weight: 600; }
-input, select, textarea, button { width: 100%; padding: 0.6rem; margin-top: 0.25rem; }
-pre { white-space: pre-wrap; background: #1f2937; color: #f9fafb; padding: 1rem; border-radius: 6px; overflow-x: auto; }
-.error { border-color: #ef4444; color: #991b1b; }
+:root {
+  --york-red: #c8102e;
+  --york-red-dark: #9f0d24;
+  --text-strong: #151515;
+  --text-body: #2b2b2b;
+  --muted-text: #525252;
+  --bg-page: #f3f4f6;
+  --bg-card: #ffffff;
+  --bg-subtle: #f8f8f8;
+  --border: #d7d9dd;
+  --focus: #005fcc;
+  --error-bg: #fff0f1;
+  --error-border: #b82037;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--text-body);
+  background: linear-gradient(180deg, #fafafa 0%, var(--bg-page) 100%);
+  line-height: 1.5;
+}
+
+.container {
+  width: min(100%, 1024px);
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.4rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.page-header {
+  border-top: 6px solid var(--york-red);
+  background: linear-gradient(140deg, #ffffff 50%, #fdf2f4 100%);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--york-red-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+}
+
+h1,
+h2 {
+  color: var(--text-strong);
+  margin: 0;
+}
+
+h1 {
+  margin-top: 0.3rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle,
+.section-intro {
+  margin: 0.5rem 0 0;
+  color: var(--muted-text);
+}
+
+.compose-form {
+  margin-top: 1rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.two-up {
+  margin-top: 0.2rem;
+}
+
+.field-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 0.35rem;
+}
+
+.help-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  color: var(--muted-text);
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #b8bdc5;
+  border-radius: 10px;
+  padding: 0.7rem 0.75rem;
+  background: #fff;
+  color: var(--text-body);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #8a929d;
+}
+
+textarea {
+  min-height: 13rem;
+  resize: vertical;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.15s ease;
+}
+
+.primary-button {
+  width: 100%;
+  background: var(--york-red);
+  color: #fff;
+  padding: 0.78rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.primary-button:hover {
+  background: var(--york-red-dark);
+}
+
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.secondary-button {
+  width: auto;
+  padding: 0.5rem 0.9rem;
+  color: var(--york-red-dark);
+  background: #fff;
+  border-color: #c9cdd3;
+}
+
+.secondary-button:hover {
+  background: #f5f5f5;
+  border-color: #aeb4bd;
+}
+
+.results {
+  margin-top: 1rem;
+}
+
+.result-card p {
+  margin-top: 0;
+}
+
+.result-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.result-list li + li {
+  margin-top: 0.35rem;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow-x: auto;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 10px;
+  padding: 1rem;
+  font-size: 0.9rem;
+  border: 1px solid #2f3c53;
+}
+
+.error-panel {
+  border: 2px solid var(--error-border);
+  background: var(--error-bg);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  color: #57111a;
+  margin-bottom: 1rem;
+}
+
+.error-panel h2 {
+  color: #57111a;
+  margin-bottom: 0.35rem;
+}
+
+.validation-panel {
+  margin-top: 0;
+}
+
+@media (min-width: 760px) {
+  .container {
+    margin-top: 2.5rem;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .compose-form > .field-group:first-child {
+    margin-bottom: 1.1rem;
+  }
+}
