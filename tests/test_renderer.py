@@ -125,3 +125,35 @@ def test_renderer_avoids_empty_custom_sections_and_uses_html_callout_wrapper():
     assert "Important Notice" in markup
     assert "Docker is not automatically approved for production hosting." in markup
     assert re.search(r"<section\\b[^>]*>\\s*</section>", markup) is None
+
+
+def test_three_card_grid_uses_html_wrapper_instead_of_group_block():
+    blueprint = PageBlueprint.model_validate(
+        {
+            "page_type": "uit_service_page",
+            "title": "Test",
+            "intro": "Intro",
+            "sections": [
+                {
+                    "section_id": "related-services",
+                    "module_type": "three_card_grid",
+                    "heading": "Related Services",
+                    "content": {
+                        "cards": [
+                            {"title": "A", "body": "Alpha"},
+                            {"title": "B", "body": "Beta"},
+                            {"title": "C", "body": "Gamma"},
+                        ]
+                    },
+                }
+            ],
+            "cta": {"label": "Contact", "url": "https://example.edu/contact"},
+        }
+    )
+
+    renderer = GutenbergRenderer()
+    markup = renderer.render_page(blueprint)
+
+    assert '<section id="related-services" class="york-three-card-grid">' in markup
+    assert "<!-- wp:group" not in markup
+    assert "<!-- wp:html -->" in markup
