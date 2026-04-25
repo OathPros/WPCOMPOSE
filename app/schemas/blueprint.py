@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Annotated, Literal, Union
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class PageType(str, Enum):
@@ -23,6 +23,8 @@ class ModuleType(str, Enum):
     FAQ_ACCORDION = "faq_accordion"
     CTA_BLOCK = "cta_block"
     RELATED_LINKS = "related_links"
+    KADENCE_TABS = "kadence_tabs"
+    KADENCE_ACCORDION = "kadence_accordion"
 
 
 class HeroBannerContent(BaseModel):
@@ -68,6 +70,29 @@ class FAQItem(BaseModel):
 
 class FAQAccordionContent(BaseModel):
     items: list[FAQItem]
+
+
+class KadenceTab(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    title: str
+    heading: str | None = None
+    body: str | None = None
+
+
+class KadenceTabsContent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    tabs: list[KadenceTab]
+
+
+class KadenceAccordionItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    title: str
+    body: str
+
+
+class KadenceAccordionContent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    items: list[KadenceAccordionItem]
 
 
 class CTABlockContent(BaseModel):
@@ -138,6 +163,16 @@ class FAQAccordionSection(BaseSection):
     content: FAQAccordionContent
 
 
+class KadenceTabsSection(BaseSection):
+    module_type: Literal[ModuleType.KADENCE_TABS]
+    content: KadenceTabsContent
+
+
+class KadenceAccordionSection(BaseSection):
+    module_type: Literal[ModuleType.KADENCE_ACCORDION]
+    content: KadenceAccordionContent
+
+
 class CTABlockSection(BaseSection):
     module_type: Literal[ModuleType.CTA_BLOCK]
     content: CTABlockContent
@@ -158,6 +193,8 @@ Section = Annotated[
         ThreeCardGridSection,
         CalloutBandSection,
         FAQAccordionSection,
+        KadenceTabsSection,
+        KadenceAccordionSection,
         CTABlockSection,
         RelatedLinksSection,
     ],

@@ -1,0 +1,28 @@
+{% set tabs = section.content.tabs %}
+{% set tab_count = tabs | length %}
+{% set base_id = section.section_id | replace('-', '_') %}
+<!-- wp:kadence/tabs {"uniqueID":"{{ base_id }}","contentBgColor":"var(\u002d\u002dglobal-palette9, #ffffff)","contentBorderStyles":[{"top":["#bcbcbc","",1],"right":["#bcbcbc","",1],"bottom":["#bcbcbc","",1],"left":["#bcbcbc","",1],"unit":"px"}],"titles":[{% for tab in tabs %}{"text":"{{ tab.title }}","icon":"","iconSide":"right","onlyIcon":false,"subText":"","anchor":""}{% if not loop.last %},{% endif %}{% endfor %}],"titleColor":"var(\u002d\u002dglobal-palette5, #444444)","titleColorHover":"var(\u002d\u002dglobal-palette5, #444444)","titleColorActive":"var(\u002d\u002dglobal-palette5, #444444)","titleBg":"var(\u002d\u002dglobal-palette9, #ffffff)","titleBgHover":"var(\u002d\u002dglobal-palette9, #ffffff)","titleBgActive":"var(\u002d\u002dglobal-palette9, #ffffff)","titleBorder":"var(\u002d\u002dglobal-palette7, #eeeeee)","titleBorderHover":"var(\u002d\u002dglobal-palette8, #F7FAFC)","titleBorderActive":"#bcbcbc","titleBorderWidth":[1,1,0,1],"titleBorderRadius":[4,4,0,0],"titlePadding":[8,20,8,20],"titleMargin":[0,8,-1,0],"size":1.1,"sizeType":"em","lineHeight":1.4,"lineType":"em"} -->
+<div class="wp-block-kadence-tabs alignnone"><div class="kt-tabs-wrap kt-tabs-id{{ base_id }} kt-tabs-has-{{ tab_count }}-tabs kt-active-tab-1 kt-tabs-layout-tabs kt-tabs-tablet-layout-inherit kt-tabs-mobile-layout-inherit kt-tab-alignment-left "><ul class="kt-tabs-title-list">
+{% for tab in tabs %}
+{% set tab_anchor = 'tab-' ~ (tab.title | to_anchor) %}
+<li id="{{ tab_anchor }}" class="kt-title-item kt-title-item-{{ loop.index }} kt-tabs-svg-show-always kt-tabs-icon-side-right {% if loop.first %}kt-tab-title-active{% else %}kt-tab-title-inactive{% endif %}"><a href="#{{ tab_anchor }}" data-tab="{{ loop.index }}" class="kt-tab-title kt-tab-title-{{ loop.index }} "><span class="kt-title-text">{{ tab.title }}</span></a></li>
+{% endfor %}
+</ul><div class="kt-tabs-content-wrap">
+{% for tab in tabs %}
+<!-- wp:kadence/tab {"{% if not loop.first %}id":{{ loop.index }},"{% endif %}uniqueID":"{{ base_id }}_tab_{{ loop.index }}"} -->
+<div class="wp-block-kadence-tab kt-tab-inner-content kt-inner-tab-{{ loop.index }} kt-inner-tab{{ base_id }}_tab_{{ loop.index }}"><div class="kt-tab-inner-content-inner">
+{% if tab.heading %}
+<!-- wp:heading -->
+<h2 class="wp-block-heading">{{ tab.heading }}</h2>
+<!-- /wp:heading -->
+{% endif %}
+{% if tab.body %}
+<!-- wp:paragraph -->
+<p>{{ tab.body }}</p>
+<!-- /wp:paragraph -->
+{% endif %}
+</div></div>
+<!-- /wp:kadence/tab -->
+{% endfor %}
+</div></div></div>
+<!-- /wp:kadence/tabs -->

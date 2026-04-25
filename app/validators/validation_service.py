@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from app.rules.page_rules import PAGE_RULES
 from app.schemas.blueprint import ModuleType, PageBlueprint
 
@@ -42,6 +44,51 @@ class ValidationService:
                     if anchor_id not in section_ids:
                         errors.append(f"on_this_page_nav anchor '{anchor}' does not match any section_id.")
 
+            if section.module_type == ModuleType.KADENCE_TABS:
+                tabs = section.content.tabs
+                if len(tabs) < 2:
+                    errors.append("kadence_tabs must include at least 2 tabs.")
+                if len(tabs) > 6:
+                    errors.append("kadence_tabs supports a maximum of 6 tabs.")
+
+                seen_titles: set[str] = set()
+                for idx, tab in enumerate(tabs, start=1):
+                    title = tab.title.strip()
+                    heading = (tab.heading or "").strip()
+                    body = (tab.body or "").strip()
+
+                    if not title:
+                        errors.append(f"kadence_tabs tab {idx} title cannot be empty.")
+                    normalized_title = self._normalize_label(title)
+                    if normalized_title in seen_titles:
+                        errors.append("kadence_tabs tab titles must be unique after normalization.")
+                    seen_titles.add(normalized_title)
+
+                    if not heading and not body:
+                        errors.append(f"kadence_tabs tab {idx} must include heading or body.")
+
+            if section.module_type == ModuleType.KADENCE_ACCORDION:
+                items = section.content.items
+                if len(items) < 1:
+                    errors.append("kadence_accordion must include at least 1 item.")
+                if len(items) > 8:
+                    errors.append("kadence_accordion supports a maximum of 8 items.")
+
+                seen_titles: set[str] = set()
+                for idx, item in enumerate(items, start=1):
+                    title = item.title.strip()
+                    body = item.body.strip()
+
+                    if not title:
+                        errors.append(f"kadence_accordion item {idx} title cannot be empty.")
+                    if not body:
+                        errors.append(f"kadence_accordion item {idx} body cannot be empty.")
+
+                    normalized_title = self._normalize_label(title)
+                    if normalized_title in seen_titles:
+                        errors.append("kadence_accordion item titles must be unique after normalization.")
+                    seen_titles.add(normalized_title)
+
         has_placeholder = "TODO" in blueprint.intro or any("TODO" in note for note in blueprint.editor_notes)
         if has_placeholder and not blueprint.editor_notes:
             errors.append("Editor notes must surface missing content or placeholders.")
@@ -55,3 +102,9 @@ class ValidationService:
         if "<h1" not in markup:
             errors.append("Rendered output must include one H1.")
         return errors
+
+    @staticmethod
+    def _normalize_label(value: str) -> str:
+        lowered = value.lower().strip()
+        collapsed = re.sub(r"\s+", " ", lowered)
+        return re.sub(r"[^a-z0-9]", "", collapsed)
