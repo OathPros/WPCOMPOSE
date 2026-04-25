@@ -1,0 +1,70 @@
+{
+  "page_type": "uit_service_page",
+  "audience": "staff",
+  "tone": "service-oriented",
+  "title": "Docker Support Service",
+  "intro": "Find support resources and request help.",
+  "sections": [
+    {
+      "section_id": "hero",
+      "module_type": "hero_banner",
+      "heading": "Docker Support",
+      "content": {"eyebrow": "UIT", "subheading": "Guidance and troubleshooting"}
+    },
+    {
+      "section_id": "nav",
+      "module_type": "on_this_page_nav",
+      "heading": "On this page",
+      "content": {"anchors": ["#support-hours", "#docker-support-tabs", "#docker-faq"]}
+    },
+    {
+      "section_id": "support-hours",
+      "module_type": "standard_content_section",
+      "heading": "Support Hours",
+      "content": {"body": "Weekdays 8am to 8pm."}
+    },
+    {
+      "section_id": "docker-support-tabs",
+      "module_type": "kadence_tabs",
+      "heading": "Docker Support Details",
+      "content": {
+        "tabs": [
+          {
+            "title": "What support includes",
+            "heading": "What support includes",
+            "body": "UIT can provide installation guidance, basic troubleshooting and referrals."
+          },
+          {
+            "title": "What is out of scope",
+            "heading": "What is out of scope",
+            "body": "Docker Support does not include application development, production hosting or Kubernetes."
+          },
+          {
+            "title": "Before you request support",
+            "heading": "Before you request support",
+            "body": "Include your operating system, Docker version, error messages and use case."
+          }
+        ]
+      }
+    },
+    {
+      "section_id": "docker-faq",
+      "module_type": "kadence_accordion",
+      "heading": "Frequently Asked Questions",
+      "content": {
+        "items": [
+          {
+            "title": "Can UIT build my Docker image?",
+            "body": "No. UIT can provide guidance and troubleshooting, but users remain responsible for application code, Dockerfile content, image maintenance and long-term ownership."
+          },
+          {
+            "title": "Can I use Docker for production hosting?",
+            "body": "Docker Support does not automatically include production hosting. Production use requires an approved operating model and may require review by infrastructure, security, cloud or architecture teams."
+          }
+        ]
+      }
+    }
+  ],
+  "cta": {"label": "Submit ticket", "url": "https://www.yorku.ca"},
+  "editor_notes": ["Align support process with service desk."]
+}
