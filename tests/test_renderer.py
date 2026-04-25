@@ -16,9 +16,10 @@ def test_renderer_outputs_hero_lead_standard_modules():
     renderer = GutenbergRenderer()
     markup = renderer.render_page(blueprint)
 
-    assert "york-hero-banner" in markup
+    assert "<!-- wp:group {\"tagName\":\"section\"" in markup
+    assert "class=\"wp-block-group york-hero-banner\"" in markup
     assert "york-lead" in markup
-    assert "york-standard-content" in markup
+    assert "class=\"wp-block-group york-standard-content\"" in markup
     assert "<!-- wp:" in markup
 
 
@@ -44,3 +45,43 @@ def test_renderer_outputs_kadence_tabs_and_accordion_modules():
     assert "kt-accordion-inner-wrap" in markup
     assert "Can UIT build my Docker image?" in markup
     assert "Can I use Docker for production hosting?" in markup
+
+
+def test_renderer_outputs_valid_related_links_and_on_page_nav_markup():
+    blueprint = PageBlueprint.model_validate(
+        {
+            "page_type": "uit_service_page",
+            "title": "Test",
+            "intro": "Intro",
+            "sections": [
+                {
+                    "section_id": "on-this-page",
+                    "module_type": "on_this_page_nav",
+                    "heading": "On this page",
+                    "content": {"anchors": ["overview", "#service-details"]},
+                },
+                {
+                    "section_id": "related-services",
+                    "module_type": "related_links",
+                    "heading": "Related Services",
+                    "content": {
+                        "links": [
+                            {"title": "Service A", "url": "https://example.edu/a"},
+                            {"title": "Service B", "url": "https://example.edu/b"},
+                        ]
+                    },
+                },
+            ],
+            "cta": {"label": "Contact", "url": "https://example.edu/contact"},
+        }
+    )
+
+    renderer = GutenbergRenderer()
+    markup = renderer.render_page(blueprint)
+
+    assert "<!-- wp:group {\"tagName\":\"section\",\"anchor\":\"related-services\",\"className\":\"york-related-links\"} -->" in markup
+    assert "<!-- wp:list {\"className\":\"york-related-links\"} -->" not in markup
+    assert "<!-- wp:list -->" in markup
+    assert "<a href=\"#overview\">Overview</a>" in markup
+    assert "<a href=\"#service-details\">Service Details</a>" in markup
+    assert 'href="overview"' not in markup

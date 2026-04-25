@@ -1,5 +1,9 @@
 <!-- wp:list {"className":"york-on-this-page"} -->
 <ul id="{{ section.section_id }}" class="york-on-this-page">
-{% for anchor in section.content.anchors %}<li><a href="{{ anchor }}">{{ anchor.lstrip('#') }}</a></li>{% endfor %}
+{% for anchor in section.content.anchors %}
+{% set normalized_anchor = anchor.lstrip('#') %}
+{% set link_text = normalized_anchor.replace('-', ' ').title() %}
+<li><a href="#{{ normalized_anchor }}">{{ link_text }}</a></li>
+{% endfor %}
 </ul>
 <!-- /wp:list -->
